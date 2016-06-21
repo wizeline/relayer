@@ -19,7 +19,7 @@ setup(
     url='https://github.com/wizeline/relayer',
     author='Wizeline',
     author_email='engineering@wizeline.com',
-    description='Relayer is a library to emit kafka message and group logs to relay them to kafka for log aggregation.',
+    description='Relayer is a library to emit kafka messages and group logs to relay them to kafka for log aggregation.',
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
     zip_safe=False,

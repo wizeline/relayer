@@ -17,7 +17,7 @@
 
 ## About
 
-Relayer is a library to emit kafka message and group logs to relay them to kafka for log aggregation.
+Relayer is a library to emit kafka messages and group logs to relay them to kafka for log aggregation.
 
 
 ## Install
