@@ -14,9 +14,6 @@ class TestEventEmitter(BaseTestCase):
         self.producer = MockedProducer()
         self.emitter = EventEmitter(self.producer)
 
-    def _get_topic_messages(self, topic):
-        return self.producer.produced_messages[topic]
-
     def test_sending_message(self):
         self.emitter.emit('foo', 'bar')
         messages = self._get_topic_messages('foo')

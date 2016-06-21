@@ -9,3 +9,6 @@ class BaseTestCase(TestCase):
         mock_instance = MockedProducer()
         kafka_producer_mock.return_value = mock_instance
         self.producer = mock_instance
+
+    def _get_topic_messages(self, topic):
+        return self.producer.produced_messages[topic]
