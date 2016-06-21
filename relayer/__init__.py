@@ -1,8 +1,7 @@
 from kafka import KafkaProducer
 
 from .event_emitter import EventEmitter
-from .exceptions import NonJSONSerializableMessageError, UnsupportedPartitionKeyTypeError, ConfigurationError  # noqa
-
+from .exceptions import ConfigurationError
 
 __version__ = '0.0.1'
 
