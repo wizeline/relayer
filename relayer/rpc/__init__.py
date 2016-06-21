@@ -11,7 +11,6 @@ def make_rpc_relayer(logging_topic, kafka_hosts=None):
 
     def decorator(function):
         def wrapper(*args, **kwargs):
-            function.__qualname__
             start_time = datetime.utcnow()
             kwargs['relayer'] = event_relayer
             context.start_request()
