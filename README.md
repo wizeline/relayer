@@ -35,7 +35,7 @@ $ pip install git+ssh://git@github.com/wizeline/relayer.git
 
 Relayer supports two different clients, RPC and Flask, depending on which client do you need the initialization steps differ, but once you have a `relayer` object the usage is identical, the relayer object provides two methods:
 
-`relayer.emit(event_type, event_subtype, payload, partition_key=None)`: This method writes directly to a kafka topic, the kafka topic is defined by the `event_type` argument, if `partition_key` is provided all messages sent to that specific `partition_key` are guaranteed to get written to the same partition and the `key` of the message will be the binary representation of that key, the partition key can only be a string, a bytes string or a uuid. The message written is the json encoding of a dictionary containing `event_type`, `event_subtype` and `payload` keys.
+`relayer.emit(event_type, event_subtype, payload, partition_key=None)`: This method writes directly to a kafka topic, the kafka topic is defined by the `event_type` argument, if `partition_key` is provided all messages sent to that specific `partition_key` are guaranteed to get written to the same partition and the `key` of the message will be the binary representation of that key, the partition key can only be a string, a bytes string or a uuid. The message written is the json encoding of a dictionary containing `event_type`, `event_subtype` and `payload` keys, if the message is not json serializable the exception `NonJSONSerializableMessageError` will be raised.
 
 `relayer.log(log_level, message)`: This method logs a message, all the messages logged gets written to a specific topic at the end of the request (or RPC call), more on this later.
 
