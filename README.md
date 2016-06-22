@@ -9,7 +9,7 @@
 1. [About](#about)
 2. [Install](#install)
 3. [Usage](#usage)
-    1. [RPC](#flask)
+    1. [Flask](#flask)
     2. [RPC](#rpc)
 4. [Hacking](#hacking)
     1. [Setup](#setup)
