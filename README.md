@@ -76,7 +76,20 @@ def register_extensions(app):
     relayer.init_app(app, 'logging_topic', kafka_hosts='kafka')
 ```
 
-Once you've done that you can import `extensions.relayer` from anywhere on your Flask application and use `relayer.emit` and `relayer.log`
+Once you've done that you can import `extensions.relayer` from anywhere on your Flask application and use `relayer.emit` and `relayer.log`, for instance, somewhere on a view you can do:
+
+```python
+
+from extensions import relayer
+
+@app.route('/', methods=['GET'])
+def get_root():
+    relayer.log('info', 'Getting root')
+
+@app.route('/' methods=['POST'])
+def create_root():
+    relayer.emit('entity_created', 'root', {'id': 10})
+```
 
 ### RPC
 
