@@ -11,6 +11,7 @@
 3. [Usage](#usage)
     1. [Flask](#flask)
     2. [RPC](#rpc)
+    3. [Disable for testing](#disable-for-testing)
 4. [Hacking](#hacking)
     1. [Setup](#setup)
     2. [Testing](#testing)
@@ -214,7 +215,29 @@ class RPCHandler(object):
         pass
 ```
 
+### Disable for testing
 
+When running tests you usally need to mock the relayer so it doesn't try to connect to kafka while running the tests, to ease that relayer includes the `relayer.test` package to help you mock it.
+
+Example test file:
+
+```python
+from unittest import TestCase
+
+from relayer.test import RelayerPatch
+
+class MyTestCase(TestCase):
+
+    def setUp(self):
+        self.relayer_patch = RelayerPatch()
+        # After the following line relayer will be patcher and it won't try to connect with kafka
+        self.relayer_patch.start()
+
+    def tearDown(self):
+        self.relayer_patch.stop()
+```
+
+If you need to examine what would be written to kafka when patching relayer you can examine the `mockec_producer` property from the RelayerPatch object, this object has a dictionary named `produced_messages` where the key is the name of the topic and the value is a list of tuples with the messages and the partition key used (if any).
 
 ## Hacking
 
