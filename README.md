@@ -237,7 +237,7 @@ class MyTestCase(TestCase):
         self.relayer_patch.stop()
 ```
 
-If you need to examine what would be written to kafka when patching relayer you can examine the `mockec_producer` property from the RelayerPatch object, this object has a dictionary named `produced_messages` where the key is the name of the topic and the value is a list of tuples with the messages and the partition key used (if any).
+If you need to examine what would be written to kafka when patching relayer you can examine the `mocked_producer` property from the RelayerPatch object, this object has a dictionary named `produced_messages` where the key is the name of the topic and the value is a list of tuples with the messages and the partition key used (if any).
 
 ## Hacking
 
