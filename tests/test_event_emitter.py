@@ -2,10 +2,10 @@ from uuid import uuid4
 from datetime import datetime
 
 from relayer import EventEmitter
+from relayer.test import MockedProducer
 from relayer.exceptions import NonJSONSerializableMessageError, UnsupportedPartitionKeyTypeError
 
 from . import BaseTestCase
-from .mocks import MockedProducer
 
 
 class TestEventEmitter(BaseTestCase):

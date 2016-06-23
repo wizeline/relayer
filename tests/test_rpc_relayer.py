@@ -1,5 +1,4 @@
 import json
-from unittest import mock
 
 from relayer.rpc import make_rpc_relayer
 
@@ -8,10 +7,8 @@ from . import BaseTestCase
 
 class TestRPCRelayer(BaseTestCase):
 
-    @mock.patch('relayer.KafkaProducer')
-    def setUp(self, kafka_producer_mock):
-        self._setup_kafka_producer_mock(kafka_producer_mock)
-
+    def setUp(self):
+        super().setUp()
         relayer = make_rpc_relayer('logging_topic', kafka_hosts='kafka')
 
         @relayer

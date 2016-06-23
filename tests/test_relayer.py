@@ -1,5 +1,3 @@
-from unittest import mock
-
 from relayer import Relayer
 from relayer.exceptions import ConfigurationError
 
@@ -9,9 +7,8 @@ from .mocks import MockedContextHandler
 
 class TestRelayer(BaseTestCase):
 
-    @mock.patch('relayer.KafkaProducer')
-    def setUp(self, kafka_producer_mock):
-        self._setup_kafka_producer_mock(kafka_producer_mock)
+    def setUp(self):
+        super().setUp()
         self.relayer = Relayer('log', MockedContextHandler, kafka_hosts='foo')
 
     def test_requires_kafka_hosts(self):

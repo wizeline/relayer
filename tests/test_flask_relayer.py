@@ -1,5 +1,4 @@
 import json
-from unittest import mock
 
 import flask
 
@@ -10,9 +9,8 @@ from . import BaseTestCase
 
 class FlaskRelayerTestCase(BaseTestCase):
 
-    @mock.patch('relayer.KafkaProducer')
-    def setUp(self, kafka_producer_mock):
-        self._setup_kafka_producer_mock(kafka_producer_mock)
+    def setUp(self):
+        super().setUp()
         app = flask.Flask(__name__)
         self.app = app
         self.client = self.app.test_client()
