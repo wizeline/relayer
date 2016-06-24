@@ -208,9 +208,9 @@ And finally you can actually use the `rpc_relayer` from your `rpc_handler.py`:
 ```python
 from .extensions import rpc_relayer
 
-@rpc_relayer
 class RPCHandler(object):
-    def service_method(self, some_argument):
+    @rpc_relayer
+    def service_method(self, some_argument, relayer=None):
         # TODO: Actually implement the service
         pass
 ```
