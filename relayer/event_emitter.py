@@ -6,10 +6,14 @@ from .exceptions import NonJSONSerializableMessageError, UnsupportedPartitionKey
 
 class EventEmitter(object):
 
-    def __init__(self, producer):
+    def __init__(self, producer, topic_prefix='', topic_suffix=''):
         self.producer = producer
+        self.topic_prefix = topic_prefix
+        self.topic_suffix = topic_suffix
 
     def emit(self, topic, message, partition_key=None):
+
+        topic = '{0}{1}{2}'.format(self.topic_prefix, topic, self.topic_suffix)
 
         if isinstance(partition_key, str):
             partition_key = partition_key.encode('utf-8')

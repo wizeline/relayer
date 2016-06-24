@@ -9,7 +9,7 @@ class TestRPCRelayer(BaseTestCase):
 
     def setUp(self):
         super().setUp()
-        relayer = make_rpc_relayer('logging_topic', kafka_hosts='kafka')
+        relayer = make_rpc_relayer('logging', kafka_hosts='kafka', topic_prefix='test_', topic_suffix='_topic')
 
         @relayer
         def rpc_method(value, relayer=None):
@@ -25,7 +25,7 @@ class TestRPCRelayer(BaseTestCase):
 
     def test_emitted_messages(self):
         self.rpc_method(True)
-        messages = self._get_topic_messages('type')
+        messages = self._get_topic_messages('test_type_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
 
@@ -38,7 +38,7 @@ class TestRPCRelayer(BaseTestCase):
 
     def test_log(self):
         self.rpc_method(True)
-        messages = self._get_topic_messages('logging_topic')
+        messages = self._get_topic_messages('test_logging_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
         message.should.have.key('date')

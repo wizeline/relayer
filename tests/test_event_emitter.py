@@ -42,3 +42,13 @@ class TestEventEmitter(BaseTestCase):
     def test_flush(self):
         self.emitter.flush()
         self.producer.flushed.should.be.true
+
+    def test_message_prefix(self):
+        self.emitter = EventEmitter(self.producer, topic_prefix='test_')
+        self.emitter.emit('foo', 'bar')
+        self._get_topic_messages('test_foo').should.have.length_of(1)
+
+    def test_message_suffix(self):
+        self.emitter = EventEmitter(self.producer, topic_suffix='_test')
+        self.emitter.emit('foo', 'bar')
+        self._get_topic_messages('foo_test').should.have.length_of(1)

@@ -42,6 +42,8 @@ Relayer supports two different clients, RPC and Flask, depending on which client
 
 When you do a `relayer.emit` the message gets sent immediately to kafka, but also a copy gets saved for the purpose of log aggregation. When you create the relayer a `logging_topic` needs to be provided, this argument represents a kafka topic where log information gets written, all the messages written by `relayer.emit` and `relayer.log` gets aggregated for every request (or RPC call) and gets written to the specified `logging_topic` on kafka, so it can later be piped to an ELK stack or similar systems. This special log message also contains metadata related to the request, such as the timestamp and how long did it take to process the request.
 
+Both RPC and Flask relayer support the optional parameters `topic_prefix` and `topic_suffix`. When `topic_prefix` is present all message sent to any kafka topic will prepend the value of `topic_prefix` to the topic name, that includes both the logging topic value and the topics used on `emit` calls. `topic_suffix` does exactly the same but instead of prepending, it appends its value to the topic names, this might be useful to namespace topics if you want to use the same kafka cluster to host messages from a few different environments.
+
 
 ### Flask
 
