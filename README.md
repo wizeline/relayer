@@ -28,7 +28,7 @@ Relayer is a library to emit kafka messages and group logs to relay them to kafk
 Just do:
 
 ```
-$ pip install git+ssh://git@github.com/wizeline/relayer.git
+$ pip install relayer
 ```
 
 
