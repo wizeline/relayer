@@ -14,7 +14,7 @@ class FlaskRelayerTestCase(BaseTestCase):
         app = flask.Flask(__name__)
         self.app = app
         self.client = self.app.test_client()
-        self.relayer = FlaskRelayer(app, 'logging_topic', 'kafka')
+        self.relayer = FlaskRelayer(app, 'logging', 'kafka', topic_prefix='test_', topic_suffix='_topic')
 
         @app.route('/test')
         def test_emit():
@@ -27,7 +27,7 @@ class FlaskRelayerTestCase(BaseTestCase):
 
     def test_emitted_messages(self):
         self.client.get('/test')
-        messages = self._get_topic_messages('type')
+        messages = self._get_topic_messages('test_type_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
 
@@ -40,7 +40,7 @@ class FlaskRelayerTestCase(BaseTestCase):
 
     def test_log(self):
         self.client.get('/test')
-        messages = self._get_topic_messages('logging_topic')
+        messages = self._get_topic_messages('test_logging_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
         message.should.have.key('date')
