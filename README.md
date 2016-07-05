@@ -245,11 +245,9 @@ If you need to examine what would be written to kafka when patching relayer you 
 
 ### Settings for development
 
-You might not have kafka running on your local environment, on those cases you can use `RelayerPatch` to avoid hitting kafka on your local,
-just as described on the [Disable for testing](#disable-for-testing) section.
+You might not have kafka running on your local environment, on those cases you can use `RelayerPatch` to avoid hitting kafka on your local, just as described on the [Disable for testing](#disable-for-testing) section.
 
-If you do that you might still be interested on being able to see on your console the messages produced to kafka, for that `relayer` logs
-all the messages it receives to its logger so you can configure it to be shown on your environment.
+If you do that you might still be interested on being able to see on your console the messages produced to kafka, for that `relayer` logs all the messages it receives to its logger so you can configure it to be shown on your environment.
 
 ```python
 import logging
