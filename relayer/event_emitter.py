@@ -2,6 +2,7 @@ import json
 from uuid import UUID
 
 from .exceptions import NonJSONSerializableMessageError, UnsupportedPartitionKeyTypeError
+from .logger import log_kafka_message
 
 
 class EventEmitter(object):
@@ -14,6 +15,8 @@ class EventEmitter(object):
     def emit(self, topic, message, partition_key=None):
 
         topic = '{0}{1}{2}'.format(self.topic_prefix, topic, self.topic_suffix)
+
+        log_kafka_message(topic, message, partition_key=partition_key)
 
         if isinstance(partition_key, str):
             partition_key = partition_key.encode('utf-8')
