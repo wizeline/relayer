@@ -12,6 +12,7 @@
     1. [Flask](#flask)
     2. [RPC](#rpc)
     3. [Disable for testing](#disable-for-testing)
+    4. [Settings for development](#settings-for-development)
 4. [Hacking](#hacking)
     1. [Setup](#setup)
     2. [Testing](#testing)
@@ -240,6 +241,24 @@ class MyTestCase(TestCase):
 ```
 
 If you need to examine what would be written to kafka when patching relayer you can examine the `mocked_producer` property from the RelayerPatch object, this object has a dictionary named `produced_messages` where the key is the name of the topic and the value is a list of tuples with the messages and the partition key used (if any).
+
+
+### Settings for development
+
+You might not have kafka running on your local environment, on those cases you can use `RelayerPatch` to avoid hitting kafka on your local,
+just as described on the [Disable for testing](#disable-for-testing) section.
+
+If you do that you might still be interested on being able to see on your console the messages produced to kafka, for that `relayer` logs
+all the messages it receives to its logger so you can configure it to be shown on your environment.
+
+```python
+import logging
+
+relayer_logger = logging.getLogger('relayer')
+relayer_logger.setLevel(logging.DEBUG)              #  Relayer always log its message on the DEBUG level
+handler = logging.StreamHandler()
+relayer_logger.addHandler(logging.StreamHandler())  #  Stream handler outputs to stdout, you might or not need to do This
+```
 
 ## Hacking
 
