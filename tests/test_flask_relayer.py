@@ -38,6 +38,17 @@ class FlaskRelayerTestCase(BaseTestCase):
         message['event_subtype'].should.equal('subtype')
         message['payload'].should.equal('payload')
 
+    def test_x_forwarded_for(self):
+        real_ip = '127.0.0.1'
+        ips = '127.0.0.1,192.168.99.100'
+        self.client.get('/test', headers={'X-Forwarded-For': ips, 'X-Real-IP': '127.0.0.1'})
+        messages = self._get_topic_messages('test_logging_topic')
+        messages.should.have.length_of(1)
+        message = json.loads(messages[0][0].decode('utf-8'))
+
+        message.should.have.key('x_forwarded_for').should.equal(ips)
+        message.should.have.key('remote_addr').should.equal(real_ip)
+
     def test_log(self):
         self.client.get('/test')
         messages = self._get_topic_messages('test_logging_topic')
