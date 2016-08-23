@@ -40,7 +40,7 @@ class LoggingMiddleware(object):
                 'path': environ.get('PATH_INFO'),
                 'query_string': environ.get('QUERY_STRING'),
                 'remote_addr': environ.get('X_REAL_IP', environ.get('REMOTE_ADDR')),
-                'x_forwarded_for': environ.get('X_Forwarded_For'),
+                'x_forwarded_for': environ.get('X_FORWARDED_FOR'),
                 'status': status_code,
                 'content_length': content_length,
                 'request_time': elapsed_time_milliseconds
