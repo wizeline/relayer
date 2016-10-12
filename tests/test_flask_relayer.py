@@ -31,12 +31,9 @@ class FlaskRelayerTestCase(BaseTestCase):
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
 
-        message.should.have.key('event_type')
-        message.should.have.key('event_subtype')
-        message.should.have.key('payload')
-        message['event_type'].should.equal('type')
-        message['event_subtype'].should.equal('subtype')
-        message['payload'].should.equal('payload')
+        message.should.have.key('event_type').being.equal('type')
+        message.should.have.key('event_subtype').being.equal('subtype')
+        message.should.have.key('payload').being.equal('payload')
 
     def test_x_forwarded_for(self):
         real_ip = '127.0.0.1'
@@ -54,6 +51,7 @@ class FlaskRelayerTestCase(BaseTestCase):
         messages = self._get_topic_messages('test_logging_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
+        message.should.have.key('logging_topic')
         message.should.have.key('date')
         message.should.have.key('user_agent')
         message.should.have.key('method')
