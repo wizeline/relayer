@@ -34,6 +34,7 @@ class LoggingMiddleware(object):
             elapsed_time_milliseconds = elapsed_time.microseconds / 1000.0 + elapsed_time.seconds * 1000
 
             request_log = {
+                'logging_topic': self.logging_topic,
                 'date': start_time.isoformat(),
                 'user_agent': environ.get('HTTP_USER_AGENT'),
                 'method': environ.get('REQUEST_METHOD'),

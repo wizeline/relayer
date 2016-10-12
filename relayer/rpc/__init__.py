@@ -18,6 +18,7 @@ def make_rpc_relayer(logging_topic, kafka_hosts=None, topic_prefix='', topic_suf
             service_response = function(*args, **kwargs)
             end_time = datetime.utcnow()
             request_log = {
+                'logging_topic': logging_topic,
                 'date': start_time.isoformat(),
                 'service': function.__qualname__,
                 'service_time': utils.get_elapsed_time_in_milliseconds(start_time, end_time)
