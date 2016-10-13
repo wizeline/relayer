@@ -36,3 +36,11 @@ class TestRelayer(BaseTestCase):
         log_message.should.have.key('payload')
         log_message['log_level'].should.equal('info')
         log_message['payload'].should.equal('message')
+
+    def test_source_not_present(self):
+        relayer = Relayer('log', MockedContextHandler, kafka_hosts='foo', topic_prefix='pre', topic_suffix='su')
+        relayer.source.should.equal('prelogsu')
+
+    def test_source(self):
+        relayer = Relayer('log', MockedContextHandler, kafka_hosts='foo', source='container_1')
+        relayer.source.should.equal('container_1')

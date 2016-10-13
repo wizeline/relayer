@@ -4,10 +4,10 @@ from .rpc_context_handler import RPCContextHandler
 from datetime import datetime
 
 
-def make_rpc_relayer(logging_topic, kafka_hosts=None, topic_prefix='', topic_suffix=''):
+def make_rpc_relayer(logging_topic, kafka_hosts=None, topic_prefix='', topic_suffix='', source=''):
 
     event_relayer = Relayer(logging_topic, RPCContextHandler, kafka_hosts=kafka_hosts,
-                            topic_prefix=topic_prefix, topic_suffix=topic_suffix)
+                            topic_prefix=topic_prefix, topic_suffix=topic_suffix, source=source)
     context = event_relayer.context
 
     def decorator(function):
