@@ -41,6 +41,7 @@ class TestRPCRelayer(BaseTestCase):
         messages = self._get_topic_messages('test_logging_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
+        message.should.have.key('source')
         message.should.have.key('logging_topic')
         message.should.have.key('date')
         message.should.have.key('service')

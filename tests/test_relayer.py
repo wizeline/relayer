@@ -22,12 +22,10 @@ class TestRelayer(BaseTestCase):
         self.relayer.emit('type', 'subtype', 'payload', 'key')
         self.relayer.context.partition_key.should.equal('key')
         context_message = self.relayer.context.message
-        context_message.should.have.key('event_type')
-        context_message.should.have.key('event_subtype')
-        context_message.should.have.key('payload')
-        context_message['event_type'].should.equal('type')
-        context_message['event_subtype'].should.equal('subtype')
-        context_message['payload'].should.equal('payload')
+        context_message.should.have.key('source').which.should.equal(self.relayer.source)
+        context_message.should.have.key('event_type').which.should.equal('type')
+        context_message.should.have.key('event_subtype').which.should.equal('subtype')
+        context_message.should.have.key('payload').which.should.equal('payload')
 
     def test_log(self):
         self.relayer.log('info', 'message')

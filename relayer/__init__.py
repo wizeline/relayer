@@ -22,6 +22,7 @@ class Relayer(object):
 
     def emit(self, event_type, event_subtype, payload, partition_key=None):
         payload = {
+            'source': self.source,
             'event_type': event_type,
             'event_subtype': event_subtype,
             'payload': payload
