@@ -2,10 +2,10 @@ from datetime import datetime
 
 
 class LoggingMiddleware(object):
-    def __init__(self, app, wsgi_app, context, logging_topic):
+    def __init__(self, app, wsgi_app, relayer, logging_topic):
         self.app = app
         self.wsgi_app = wsgi_app
-        self.context = context
+        self.relayer = relayer
         self.logging_topic = logging_topic
 
     def __call__(self, environ, start_response):
@@ -14,7 +14,7 @@ class LoggingMiddleware(object):
             status_code = None
             content_length = None
 
-            self.context.start_request()
+            self.relayer.context.start_request()
 
             def logging_start_response(status, response_headers, exc_info=None):
                 nonlocal status_code, content_length
@@ -47,6 +47,6 @@ class LoggingMiddleware(object):
                 'request_time': elapsed_time_milliseconds
             }
 
-            self.context.end_request(self.logging_topic, request_log)
+            self.relayer.context.end_request(self.logging_topic, request_log)
 
             return response
