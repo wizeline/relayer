@@ -29,6 +29,9 @@ class Relayer(object):
         }
         self.context.emit(event_type, payload, partition_key)
 
+    def emit_raw(self, topic, message, partition_key=None):
+        self.context.emit(topic, message, partition_key)
+
     def log(self, log_level, payload):
         message = {
             'log_level': log_level,

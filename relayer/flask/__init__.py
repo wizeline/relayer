@@ -19,5 +19,8 @@ class FlaskRelayer(object):
     def emit(self, *args, **kwargs):
         self.event_relayer.emit(*args, **kwargs)
 
+    def emit_raw(self, *args, **kwargs):
+        self.event_relayer.emit_raw(*args, **kwargs)
+
     def log(self, *args, **kwargs):
         self.event_relayer.log(*args, **kwargs)

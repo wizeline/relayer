@@ -22,6 +22,11 @@ class FlaskRelayerTestCase(BaseTestCase):
             self.relayer.log('info', 'message')
             return 'ok'
 
+        @app.route('/test_raw')
+        def test_emit_raw():
+            self.relayer.emit_raw('raw', 'message')
+            return 'ok'
+
     def test_request_works_fine(self):
         self.client.get('/test').status_code.should.equal(200)
 
@@ -34,6 +39,13 @@ class FlaskRelayerTestCase(BaseTestCase):
         message.should.have.key('event_type').being.equal('type')
         message.should.have.key('event_subtype').being.equal('subtype')
         message.should.have.key('payload').being.equal('payload')
+
+    def test_emitted_raw_messages(self):
+        self.client.get('/test_raw')
+        messages = self._get_topic_messages('test_raw_topic')
+        messages.should.have.length_of(1)
+        message = json.loads(messages[0][0].decode('utf-8'))
+        message.should.equal('message')
 
     def test_x_forwarded_for(self):
         real_ip = '127.0.0.1'

@@ -42,3 +42,11 @@ class TestRelayer(BaseTestCase):
     def test_source(self):
         relayer = Relayer('log', MockedContextHandler, kafka_hosts='foo', source='container_1')
         relayer.source.should.equal('container_1')
+
+    def test_emit_raw(self):
+        self.relayer.emit_raw('topic', 'message', 'key')
+        self.relayer.context.topic.should.equal('topic')
+        self.relayer.context.partition_key.should.equal('key')
+        context_message = self.relayer.context.message
+        context_message.should.be.a(str)
+        context_message.should.equal('message')
