@@ -45,6 +45,8 @@ When you do a `relayer.emit` the message gets sent immediately to kafka, but als
 
 Both RPC and Flask relayer support the optional parameters `topic_prefix` and `topic_suffix`. When `topic_prefix` is present all message sent to any kafka topic will prepend the value of `topic_prefix` to the topic name, that includes both the logging topic value and the topics used on `emit` calls. `topic_suffix` does exactly the same but instead of prepending, it appends its value to the topic names, this might be useful to namespace topics if you want to use the same kafka cluster to host messages from a few different environments.
 
+Additionaly you can set `source` this becomes useful when you are logging from different places to the same kafka instance, alowing you to set a distinctive value. If not set, it defaults to `topic_prefix + logging_topic + topic_suffix`.
+
 
 ### Flask
 

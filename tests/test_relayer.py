@@ -22,12 +22,10 @@ class TestRelayer(BaseTestCase):
         self.relayer.emit('type', 'subtype', 'payload', 'key')
         self.relayer.context.partition_key.should.equal('key')
         context_message = self.relayer.context.message
-        context_message.should.have.key('event_type')
-        context_message.should.have.key('event_subtype')
-        context_message.should.have.key('payload')
-        context_message['event_type'].should.equal('type')
-        context_message['event_subtype'].should.equal('subtype')
-        context_message['payload'].should.equal('payload')
+        context_message.should.have.key('source').which.should.equal(self.relayer.source)
+        context_message.should.have.key('event_type').which.should.equal('type')
+        context_message.should.have.key('event_subtype').which.should.equal('subtype')
+        context_message.should.have.key('payload').which.should.equal('payload')
 
     def test_log(self):
         self.relayer.log('info', 'message')
@@ -36,3 +34,11 @@ class TestRelayer(BaseTestCase):
         log_message.should.have.key('payload')
         log_message['log_level'].should.equal('info')
         log_message['payload'].should.equal('message')
+
+    def test_source_not_present(self):
+        relayer = Relayer('log', MockedContextHandler, kafka_hosts='foo', topic_prefix='pre', topic_suffix='su')
+        relayer.source.should.equal('prelogsu')
+
+    def test_source(self):
+        relayer = Relayer('log', MockedContextHandler, kafka_hosts='foo', source='container_1')
+        relayer.source.should.equal('container_1')
