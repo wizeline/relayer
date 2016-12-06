@@ -27,4 +27,8 @@ def make_rpc_relayer(logging_topic, kafka_hosts=None, topic_prefix='', topic_suf
             context.end_request(logging_topic, request_log)
             return service_response
         return wrapper
+
+    # Expose relayer instance
+    decorator.instance = event_relayer
+
     return decorator
