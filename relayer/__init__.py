@@ -3,7 +3,7 @@ from kafka import KafkaProducer
 from .event_emitter import EventEmitter
 from .exceptions import ConfigurationError
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 
 class Relayer(object):
