@@ -1,5 +1,6 @@
 import json
 
+from relayer import Relayer
 from relayer.rpc import make_rpc_relayer
 
 from . import BaseTestCase
@@ -70,6 +71,7 @@ class TestRPCRelayer(BaseTestCase):
 
     def test_decorator_expose_instance(self):
         self.relayer_decorator.should.have.property('instance')
+        self.relayer_decorator.instance.should.be.a(Relayer)
 
     def test_decorator_expose_instance_and_logs_correctly(self):
         self.logger = self.relayer_decorator.instance
