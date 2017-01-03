@@ -70,6 +70,7 @@ class FlaskRelayerTestCase(BaseTestCase):
         message.should.have.key('method')
         message.should.have.key('path')
         message.should.have.key('query_string')
+        message.should.have.key('request_id')
         message.should.have.key('remote_addr')
         message.should.have.key('status')
         message.should.have.key('content_length')
