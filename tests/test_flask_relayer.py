@@ -1,4 +1,5 @@
 import json
+import uuid
 
 import flask
 
@@ -46,6 +47,15 @@ class FlaskRelayerTestCase(BaseTestCase):
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
         message.should.equal('message')
+
+    def test_x_request_id(self):
+        request_id = str(uuid.uuid4())
+        self.client.get('/test', headers={'X-Request-ID': request_id})
+        messages = self._get_topic_messages('test_logging_topic')
+        messages.should.have.length_of(1)
+        message = json.loads(messages[0][0].decode('utf-8'))
+
+        message.should.have.key('request_id').should.equal(request_id)
 
     def test_x_forwarded_for(self):
         real_ip = '127.0.0.1'
