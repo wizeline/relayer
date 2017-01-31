@@ -21,8 +21,9 @@ class Relayer(object):
             Defaults to empty string.
         topic_suffix (str): value to suffix all topics handled by relayer.
             Defaults to empty string.
-        source: If defined it must be a json serializable value.
-            Defaults to topic_prefix + logging_topic + topic_suffix.
+        source: This value will be added as a top level key in your payloads
+            when using emit or log. If defined it must be a json serializable
+            value. Defaults to topic_prefix + logging_topic + topic_suffix.
         producer_opts (dict): optional dictionary with the configuration
             for http://kafka-python.readthedocs.io/en/master/apidoc/KafkaProducer.html
     """
