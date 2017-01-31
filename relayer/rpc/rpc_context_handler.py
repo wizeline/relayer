@@ -21,4 +21,3 @@ class RPCContextHandler(object):
         log_entry['lines'] = self.kafka_producer_request_logs
 
         self.event_emitter.emit(logging_topic, log_entry)
-        self.event_emitter.flush()
