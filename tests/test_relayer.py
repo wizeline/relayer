@@ -50,3 +50,7 @@ class TestRelayer(BaseTestCase):
         context_message = self.relayer.context.message
         context_message.should.be.a(str)
         context_message.should.equal('message')
+
+    def test_flush(self):
+        self.relayer.flush()
+        self.relayer._producer.flushed.should.be.true
