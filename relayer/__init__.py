@@ -8,16 +8,24 @@ __version__ = '0.1.3'
 
 class Relayer(object):
 
-    def __init__(self, logging_topic, context_handler_class, kafka_hosts=None, topic_prefix='', topic_suffix='', source=''):
+    def __init__(self, logging_topic, context_handler_class, **kwargs):
         self.logging_topic = logging_topic
-        if not kafka_hosts:
+
+        if 'kafka_hosts' not in kwargs:
             raise ConfigurationError()
-        if source == '':
+
+        topic_prefix = kwargs.get('topic_prefix', '')
+        topic_suffix = kwargs.get('topic_suffix', '')
+
+        if 'source' not in kwargs:
             self.source = '{0}{1}{2}'.format(topic_prefix, logging_topic, topic_suffix)
         else:
-            self.source = source
-        self._producer = KafkaProducer(bootstrap_servers=kafka_hosts)
+            self.source = kwargs.get('source')
+
+        self._producer = KafkaProducer(bootstrap_servers=kwargs.get('kafka_hosts'))
+
         self._emitter = EventEmitter(self._producer, topic_prefix=topic_prefix, topic_suffix=topic_suffix)
+
         self.context = context_handler_class(self._emitter)
 
     def emit(self, event_type, event_subtype, payload, partition_key=None):

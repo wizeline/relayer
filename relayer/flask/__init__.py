@@ -5,15 +5,23 @@ from .logging_middleware import LoggingMiddleware
 
 class FlaskRelayer(object):
 
-    def __init__(self, app=None, logging_topic=None, kafka_hosts=None, topic_prefix='', topic_suffix='', source=''):
+    def __init__(self, app=None, logging_topic=None, kafka_hosts=None, **kwargs):
         if app:
-            self.init_app(app, logging_topic, kafka_hosts=kafka_hosts, topic_prefix=topic_prefix,
-                          topic_suffix=topic_suffix, source=source)
+            self.init_app(
+                app,
+                logging_topic,
+                kafka_hosts=kafka_hosts,
+                **kwargs,
+            )
 
-    def init_app(self, app, logging_topic, kafka_hosts=None, topic_prefix='', topic_suffix='', source=''):
+    def init_app(self, app, logging_topic, kafka_hosts=None, **kwargs):
         kafka_hosts = kafka_hosts or app.config.get('KAFKA_HOSTS')
-        self.event_relayer = Relayer(logging_topic, FlaskContextHandler, kafka_hosts=kafka_hosts, topic_prefix=topic_prefix,
-                                     topic_suffix=topic_suffix, source=source)
+        self.event_relayer = Relayer(
+            logging_topic,
+            FlaskContextHandler,
+            kafka_hosts=kafka_hosts,
+            **kwargs,
+        )
         app.wsgi_app = LoggingMiddleware(app, app.wsgi_app, self.event_relayer, logging_topic)
 
     def emit(self, *args, **kwargs):
