@@ -16,9 +16,9 @@ class Relayer(object):
             self.source = '{0}{1}{2}'.format(topic_prefix, logging_topic, topic_suffix)
         else:
             self.source = source
-        producer = KafkaProducer(bootstrap_servers=kafka_hosts)
-        emitter = EventEmitter(producer, topic_prefix=topic_prefix, topic_suffix=topic_suffix)
-        self.context = context_handler_class(emitter)
+        self._producer = KafkaProducer(bootstrap_servers=kafka_hosts)
+        self._emitter = EventEmitter(self._producer, topic_prefix=topic_prefix, topic_suffix=topic_suffix)
+        self.context = context_handler_class(self._emitter)
 
     def emit(self, event_type, event_subtype, payload, partition_key=None):
         payload = {
@@ -40,4 +40,4 @@ class Relayer(object):
         self.context.log(message)
 
     def flush(self):
-        self.emitter.flush()
+        self._emitter.flush()
