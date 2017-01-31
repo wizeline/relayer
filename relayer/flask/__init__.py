@@ -24,3 +24,6 @@ class FlaskRelayer(object):
 
     def log(self, *args, **kwargs):
         self.event_relayer.log(*args, **kwargs)
+
+    def flush(self, *args, **kwargs):
+        self.event_relayer.flush(*args, **kwargs)

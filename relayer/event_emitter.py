@@ -32,5 +32,5 @@ class EventEmitter(object):
 
         self.producer.send(topic, key=partition_key, value=message)
 
-    def flush(self):
-        self.producer.flush()
+    def flush(self, timeout=None):
+        self.producer.flush(timeout=timeout)
