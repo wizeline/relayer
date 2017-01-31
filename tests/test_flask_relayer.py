@@ -28,6 +28,12 @@ class FlaskRelayerTestCase(BaseTestCase):
             self.relayer.emit_raw('raw', 'message')
             return 'ok'
 
+        @app.route('/test_flush')
+        def test_log_and_flush():
+            self.relayer.log('info', 'message')
+            self.relayer.flush()
+            return 'ok'
+
     def test_request_works_fine(self):
         self.client.get('/test').status_code.should.equal(200)
 
@@ -96,3 +102,7 @@ class FlaskRelayerTestCase(BaseTestCase):
         second_line.should.have.key('payload')
         second_line['log_level'].should.equal('info')
         second_line['payload'].should.equal('message')
+
+    def test_flush(self):
+        self.client.get('/test_flush')
+        self.producer.flushed.should.be.true
