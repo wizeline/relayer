@@ -39,5 +39,5 @@ class Relayer(object):
         }
         self.context.log(message)
 
-    def flush(self, timeout=None):
-        self.emitter.flush(timeout=timeout)
+    def flush(self):
+        self.emitter.flush()

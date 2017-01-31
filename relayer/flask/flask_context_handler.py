@@ -28,4 +28,3 @@ class FlaskContextHandler(object):
         log_entry['lines'] = ctx.kafka_producer_request_logs
 
         self.event_emitter.emit(logging_topic, log_entry)
-        self.event_emitter.flush()
