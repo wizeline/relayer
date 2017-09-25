@@ -47,47 +47,6 @@ class TestRPCRelayer(BaseTestCase):
         message['event_subtype'].should.equal('subtype')
         message['payload'].should.equal('payload')
 
-    def test_log(self):
-        self.rpc_method(True)
-        messages = self._get_topic_messages('test_logging_topic')
-        messages.should.have.length_of(1)
-        message = json.loads(messages[0][0].decode('utf-8'))
-        message.should.have.key('source')
-        message.should.have.key('logging_topic')
-        message.should.have.key('date')
-        message.should.have.key('service')
-        message.should.have.key('service_time')
-        message.should.have.key('lines')
-        message['lines'].should.have.length_of(2)
-        first_line = message['lines'][0]
-        first_line.should.have.key('event_type')
-        first_line.should.have.key('event_subtype')
-        first_line.should.have.key('payload')
-        second_line = message['lines'][1]
-        second_line.should.have.key('log_level')
-        second_line.should.have.key('payload')
-        second_line['log_level'].should.equal('info')
-        second_line['payload'].should.equal('message')
-
     def test_decorator_expose_instance(self):
         self.relayer_decorator.should.have.property('instance')
         self.relayer_decorator.instance.should.be.a(Relayer)
-
-    def test_decorator_expose_instance_and_logs_correctly(self):
-        self.logger = self.relayer_decorator.instance
-        self.method_with_third_party()
-
-        messages = self._get_topic_messages('test_logging_topic')
-        messages.should.have.length_of(1)
-
-        message = json.loads(messages[0][0].decode('utf-8'))
-        message.should.have.key('lines').which.should.have.length_of(1)
-
-    def test_decorator_expose_instance_and_log_only_when_instance_is_set(self):
-        self.method_with_third_party()
-
-        messages = self._get_topic_messages('test_logging_topic')
-        messages.should.have.length_of(1)
-
-        message = json.loads(messages[0][0].decode('utf-8'))
-        message.should.have.key('lines').which.should.have.length_of(0)

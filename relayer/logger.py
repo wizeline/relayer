@@ -1,8 +1,7 @@
-import logging
-
-
-logger = logging.getLogger('relayer')
+from .logging import logger
 
 
 def log_kafka_message(topic, payload, partition_key=None):
-    logger.debug('topic: %s, partition_key: %s, message: %s', topic, partition_key, payload)
+    if not isinstance(payload, dict):
+        payload = {'message': payload}
+    logger.debug('kafka_message', topic=topic, partition_key=partition_key, **payload)
