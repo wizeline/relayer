@@ -1,5 +1,6 @@
-import json
+from datetime import datetime
 from uuid import UUID
+import json
 
 from .exceptions import NonJSONSerializableMessageError, UnsupportedPartitionKeyTypeError
 from .logger import log_kafka_message
@@ -25,6 +26,7 @@ class EventEmitter(object):
         elif partition_key is not None:
             raise UnsupportedPartitionKeyTypeError(partition_key.__class__)
 
+        message.update({'timestamp': '{0}Z'.format(datetime.utcnow())})
         try:
             message = json.dumps(message).encode('utf-8')
         except TypeError as error:
