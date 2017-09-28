@@ -6,6 +6,9 @@ from relayer.flask import FlaskRelayer
 
 from . import BaseTestCase
 
+TEST_KEY = 'foo_key'
+TEST_VAL = 'bar_val'
+
 
 class FlaskRelayerTestCase(BaseTestCase):
 
@@ -24,7 +27,7 @@ class FlaskRelayerTestCase(BaseTestCase):
 
         @app.route('/test_raw')
         def test_emit_raw():
-            self.relayer.emit_raw('raw', 'message')
+            self.relayer.emit_raw('raw', {TEST_KEY: TEST_VAL})
             return 'ok'
 
         @app.route('/test_flush')
@@ -51,7 +54,8 @@ class FlaskRelayerTestCase(BaseTestCase):
         messages = self._get_topic_messages('test_raw_topic')
         messages.should.have.length_of(1)
         message = json.loads(messages[0][0].decode('utf-8'))
-        message.should.equal('message')
+        message.should.contain(TEST_KEY)
+        message[TEST_KEY].should.equal(TEST_VAL)
 
     def test_flush(self):
         self.client.get('/test_flush')

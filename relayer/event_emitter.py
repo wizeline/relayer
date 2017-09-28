@@ -26,10 +26,10 @@ class EventEmitter(object):
         elif partition_key is not None:
             raise UnsupportedPartitionKeyTypeError(partition_key.__class__)
 
-        message.update({'timestamp': '{0}Z'.format(datetime.utcnow())})
         try:
+            message.update({'timestamp': '{0}Z'.format(datetime.utcnow())})
             message = json.dumps(message).encode('utf-8')
-        except TypeError as error:
+        except (TypeError, AttributeError) as error:
             raise NonJSONSerializableMessageError(str(error))
 
         self.producer.send(topic, key=partition_key, value=message)
