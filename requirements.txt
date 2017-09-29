@@ -1,1 +1,2 @@
 kafka-python==1.3.4
+structlog>=17.2.0

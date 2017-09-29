@@ -1,6 +1,4 @@
 from relayer import Relayer
-from .flask_context_handler import FlaskContextHandler
-from .logging_middleware import LoggingMiddleware
 
 
 class FlaskRelayer(object):
@@ -18,11 +16,9 @@ class FlaskRelayer(object):
         kafka_hosts = kafka_hosts or app.config.get('KAFKA_HOSTS')
         self.event_relayer = Relayer(
             logging_topic,
-            FlaskContextHandler,
             kafka_hosts=kafka_hosts,
             **kwargs,
         )
-        app.wsgi_app = LoggingMiddleware(app, app.wsgi_app, self.event_relayer, logging_topic)
 
     def emit(self, *args, **kwargs):
         self.event_relayer.emit(*args, **kwargs)

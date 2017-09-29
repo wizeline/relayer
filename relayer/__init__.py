@@ -2,6 +2,7 @@ from kafka import KafkaProducer
 
 from .event_emitter import EventEmitter
 from .exceptions import ConfigurationError
+from .logging import logger as log
 
 __version__ = '1.0.0'
 
@@ -10,7 +11,6 @@ class Relayer(object):
     """
     Arguments:
         logging_topic: desired kafka topic to send logs, this will get modified if a prefix o suffix is set.
-        context_handler_class: class that receives an emitter and expose at least a method emit and log.
     Keyword Arguments:
         kafka_hosts: 'host[:port]' string (or list of 'host[:port]'
             strings) that the producer should contact to bootstrap initial
@@ -28,7 +28,7 @@ class Relayer(object):
             for http://kafka-python.readthedocs.io/en/master/apidoc/KafkaProducer.html
     """
 
-    def __init__(self, logging_topic, context_handler_class, **kwargs):
+    def __init__(self, logging_topic, **kwargs):
         self.logging_topic = logging_topic
 
         if 'kafka_hosts' not in kwargs:
@@ -47,8 +47,6 @@ class Relayer(object):
 
         self._emitter = EventEmitter(self._producer, topic_prefix=topic_prefix, topic_suffix=topic_suffix)
 
-        self.context = context_handler_class(self._emitter)
-
     def emit(self, event_type, event_subtype, payload, partition_key=None):
         payload = {
             'source': self.source,
@@ -56,17 +54,17 @@ class Relayer(object):
             'event_subtype': event_subtype,
             'payload': payload
         }
-        self.context.emit(event_type, payload, partition_key)
+        self._emitter.emit(event_type, payload, partition_key)
 
     def emit_raw(self, topic, message, partition_key=None):
-        self.context.emit(topic, message, partition_key)
+        self._emitter.emit(topic, message, partition_key)
 
     def log(self, log_level, payload):
-        message = {
-            'log_level': log_level,
-            'payload': payload
-        }
-        self.context.log(message)
+        if dict != type(payload):
+            payload = {'message': payload}
+
+        log.debug('relayer_logger_deprecated')
+        log.info('relayer_log', log_level=log_level, **payload)  # logger.log isn't working properly
 
     def flush(self):
         self._emitter.flush()

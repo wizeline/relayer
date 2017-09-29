@@ -22,6 +22,7 @@ class TestEventEmitter(BaseTestCase):
 
     def test_throws_if_not_sending_json_serializable(self):
         self.emitter.emit.when.called_with('foo', datetime.utcnow()).should.throw(NonJSONSerializableMessageError)
+        # self.emitter.emit('foo', datetime.utcnow())
 
     def test_incorrect_partition_key(self):
         self.emitter.emit.when.called_with('foo', 'bar', datetime.utcnow()).should.throw(UnsupportedPartitionKeyTypeError)
