@@ -28,7 +28,7 @@ class TestRelayer(BaseTestCase):
         relayer.source.should.equal('container_1')
 
     def test_emit_raw(self):
-        self.relayer.emit_raw('topic', 'message', 'key')
+        self.relayer.emit_raw('topic', {'message': 'content'}, 'key')
 
     def test_flush(self):
         self.relayer.flush()
