@@ -27,7 +27,7 @@ class EventEmitter(object):
             raise UnsupportedPartitionKeyTypeError(partition_key.__class__)
 
         try:
-            message.update({'timestamp': '{0}Z'.format(datetime.utcnow())})
+            message.update({'timestamp': '{0}Z'.format(datetime.utcnow().isoformat())})
             message = json.dumps(message).encode('utf-8')
         except (TypeError, AttributeError) as error:
             raise NonJSONSerializableMessageError(str(error))
