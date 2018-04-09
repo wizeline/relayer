@@ -1,0 +1,30 @@
+version: 2
+
+jobs:
+  lint:
+    docker:
+    - image: python:3.6.4
+    steps:
+    - checkout
+    - run:
+        name: Lint (flake8)
+        command: |
+          pip install -r requirements/lint.txt
+          flake8 relayer tests
+  unit_test:
+    docker:
+    - image: python:3.5.5
+    steps:
+    - checkout
+    - run:
+        name: Unit test (nose)
+        command: |
+          pip install -qq -r requirements/test.txt
+          nosetests tests
+
+workflows:
+  version: 2
+  continuous_integration:
+    jobs:
+    - lint
+    - unit_test
