@@ -12,7 +12,6 @@ def requirements(filename):
     reqs = parse_requirements(filename, session=False)
     return [str(r.req) for r in reqs]
 
-
 def get_version():
     with open('relayer/__init__.py', 'r') as f:
         version_regex = r'^__version__\s*=\s*[\'"](.+)[\'"]'
