@@ -1,12 +1,16 @@
 import re
-from pip.req import parse_requirements
+
 from setuptools import setup, find_packages
+
+try:  # for pip >= 10
+    from pip._internal.req import parse_requirements
+except ImportError:  # for pip <= 9.0.3
+    from pip.req import parse_requirements
 
 
 def requirements(filename):
     reqs = parse_requirements(filename, session=False)
     return [str(r.req) for r in reqs]
-
 
 def get_version():
     with open('relayer/__init__.py', 'r') as f:
@@ -31,9 +35,5 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python :: 3'
     ],
-    tests_require=requirements('requirements-dev.txt'),
-    install_requires=requirements('requirements.txt'),
-    extras_require={
-        'dev': requirements('requirements-dev.txt')
-    }
+    install_requires=requirements('requirements.txt')
 )
