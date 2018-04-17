@@ -35,9 +35,5 @@ setup(
         'Natural Language :: English',
         'Programming Language :: Python :: 3'
     ],
-    tests_require=requirements('requirements-dev.txt'),
-    install_requires=requirements('requirements.txt'),
-    extras_require={
-        'dev': requirements('requirements-dev.txt')
-    }
+    install_requires=requirements('requirements.txt')
 )
