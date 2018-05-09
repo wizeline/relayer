@@ -1,30 +1,61 @@
 version: 2
 
 jobs:
+  fetch_dependencies:
+    docker:
+    - image: ixai/pipenv:3.5
+      environment:
+        PIPENV_VENV_IN_PROJECT: "true"
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        - pipenv-deps-{{ .Branch }}
+        - pipenv-deps-master
+        - pipenv-deps
+    - run: pipenv install -d
+    - save_cache:
+        key: pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        paths:
+        - .venv
+    - persist_to_workspace:
+        root: ./
+        paths:
+        - .venv
   lint:
     docker:
-    - image: python:3.6.4
+    - image: ixai/pipenv:3.5
+      environment:
+        PIPENV_VENV_IN_PROJECT: "true"
     steps:
     - checkout
+    - attach_workspace:
+        at: ./
     - run:
         name: Lint (flake8)
-        command: |
-          pip install -r requirements-lint.txt
-          flake8 relayer tests
+        command: pipenv run lint
   unit_test:
     docker:
-    - image: python:3.5.5
+    - image: ixai/pipenv:3.5
+      environment:
+        PIPENV_VENV_IN_PROJECT: "true"
     steps:
     - checkout
+    - attach_workspace:
+        at: ./
     - run:
         name: Unit test (nose)
-        command: |
-          pip install -r requirements-test.txt
-          nosetests tests
+        command: pipenv run test
 
 workflows:
   version: 2
   continuous_integration:
     jobs:
-    - lint
-    - unit_test
+    - fetch_dependencies
+    - lint:
+        requires:
+        - fetch_dependencies
+    - unit_test:
+        requires:
+        - fetch_dependencies

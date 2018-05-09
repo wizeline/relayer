@@ -25,13 +25,17 @@ Relayer is a library to emit kafka messages and group logs to relay them to kafk
 
 
 ## Install
+Install with Pipenv:
 
-Just do:
-
+```sh
+pipenv install relayer
 ```
-$ pip install relayer
-```
 
+or with pip:
+
+```sh
+pip install relayer
+```
 
 ## Usage
 
@@ -41,7 +45,7 @@ Relayer supports two different clients, RPC and Flask, depending on which client
 
 `relayer.emit_raw(topic, message, partition_key=None)`: This method writes directly to a kafka topic, the kafka topic is defined by the `topic` argument, if `partition_key` is provided all messages sent to that specific `partition_key` are guaranteed to get written to the same partition and the `key` of the message will be the binary representation of that key, the partition key can only be a string, a bytes string or a uuid. The message written is the json encoding of `message`, if the message is not json serializable the exception `NonJSONSerializableMessageError` will be raised.
 
-`relayer.log(log_level, message)`: This method logs a message, all the messages logged gets written to a specific topic at the end of the request (or RPC call), more on this later. The log level is just a string to categorize the severity of the log entry, it's up for the consumer of this library to use any log levels they see useful for their usecase. 
+`relayer.log(log_level, message)`: This method logs a message, all the messages logged gets written to a specific topic at the end of the request (or RPC call), more on this later. The log level is just a string to categorize the severity of the log entry, it's up for the consumer of this library to use any log levels they see useful for their usecase.
 
 When you do a `relayer.emit` the message gets sent immediately to kafka, but also a copy gets saved for the purpose of log aggregation. When you create the relayer a `logging_topic` needs to be provided, this argument represents a kafka topic where log information gets written, all the messages written by `relayer.emit` and `relayer.log` gets aggregated for every request (or RPC call) and gets written to the specified `logging_topic` on kafka, so it can later be piped to an ELK stack or similar systems. This special log message also contains metadata related to the request, such as the timestamp and how long did it take to process the request.
 
@@ -181,7 +185,7 @@ class RPCHandler(object):
 
 To integrate the RPC relayer you'll need to have the following file
 
-__extensions.py__: 
+__extensions.py__:
 
 This file is intended to load any extension needed on the service handler, like the rpc handler, it should look like:
 
@@ -266,48 +270,25 @@ relayer_logger.addHandler(logging.StreamHandler())  #  Stream handler outputs to
 
 ### Setup
 
-First install Python 3 from [Homebrew](http://brew.sh/) and virtualenvwrapper:
+Install the dependencies running:
 
-```
-brew install python3
-pip3 install virtualenv virtualenvwrapper
-```
-
-After installing virtualenvwrapper please add the following line to your shell startup file (e.g. ~/.zshrc):
-
-```
-source /usr/local/bin/virtualenvwrapper.sh
+```sh
+pipenv install --dev
 ```
 
-Then reset your terminal.
+## Testing
+To run the tests, run:
 
-Clone this respository and create the virtual environment:
-
+```sh
+pipenv run test
 ```
-$ git clone https://github.com/wizeline/relayer
-$ cd relayer
-$ mkvirtualenv relayer
-$ workon relayer
-$ pip install -r requirements-dev.txt
-$ pip install tox
-```
-
-### Testing
-
-To run the tests, you just do:
-
-```
-$ tox
-```
-
 
 ### Coding conventions
-
 We use `editorconfig` to define our coding style. Please [add editorconfig](http://editorconfig.org/#download)
 to your editor of choice.
 
-When running `tox` linting will also be run along with the tests. You can also run linting only by doing:
+You can also run linting by running:
 
-```
-$ tox -e flake8
+```sh
+pipenv run lint
 ```
