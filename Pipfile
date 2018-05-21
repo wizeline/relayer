@@ -4,8 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-test = "nosetests"
 lint = "flake8 ."
+publish = "python setup.py sdist upload"
+test = "nosetests"
 
 [dev-packages]
 "flake8-debugger" = "*"
