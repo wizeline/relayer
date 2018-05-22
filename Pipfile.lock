@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f98a90ef4948276430f276b3a6b432bac277cfa46d84682441dd28af0e2ded27"
+            "sha256": "425643c9dbf939105c393895bee8c8d7224c4858c959459cb5782a637df325e1"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.5"
+            "python_version": "3.6"
         },
         "sources": [
             {
@@ -180,18 +180,18 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:4e8a0ed6a8705a26768f4c3da26026013b157821fe5f95881599556ea9d91c19",
-                "sha256:dae4aaa78eafcad10ce2581fc34d694faa616727837fd8e55c1a00951ad6744f"
+                "sha256:680bf5ba9b28dd56e08eb7c267991a37c7a5f90a92c2e07108829931a50ff80a",
+                "sha256:6874feb22334a1e9a515193cba797664e940b763440c88115009ec323a7f2df5"
             ],
-            "version": "==4.0.2"
+            "version": "==4.0.3"
         },
         "pep8-naming": {
             "hashes": [
-                "sha256:0b82da414024f290e0e7aad80d9a7614d6a85bedd82304deeb2e4e0a74f8968b",
-                "sha256:5a2a085340b1d530605a7f4a96816433be43504c58eace799dbacdcfd6febe9d"
+                "sha256:360308d2c5d2fff8031c1b284820fbdb27a63274c0c1a8ce884d631836da4bdd",
+                "sha256:624258e0dd06ef32a9daf3c36cc925ff7314da7233209c5b01f7e5cdd3c34826"
             ],
             "index": "pypi",
-            "version": "==0.5.0"
+            "version": "==0.7.0"
         },
         "pycodestyle": {
             "hashes": [
@@ -223,12 +223,10 @@
         },
         "sure": {
             "hashes": [
-                "sha256:46c9d19dfb439607e3995f2e92420b14fbb4f0e012fb7050b2409a3d41352ed0",
-                "sha256:8e38c4c068fae6aec27a65f8aa869ccb90a49341f329d76ecad703eed25cee84",
-                "sha256:b5305e66d27b3a27e4dbe5750f8fccaafc8675d126d8fd7787c7fc0e663f7c72"
+                "sha256:3c8d5271fb18e2c69e2613af1ad400d8df090f1456081635bd3171847303cdaa"
             ],
             "index": "pypi",
-            "version": "==1.4.9"
+            "version": "==1.4.11"
         },
         "termstyle": {
             "hashes": [

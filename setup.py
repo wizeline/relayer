@@ -27,7 +27,7 @@ setup(
         'Programming Language :: Python :: 3'
     ],
     install_requires=[
-        'kafka-python>=1.3.4',
-        'structlog>=17.2.0',
+        'kafka-python',
+        'structlog',
     ]
 )
