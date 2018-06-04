@@ -47,6 +47,22 @@ jobs:
     - run:
         name: Unit test (nose)
         command: pipenv run test
+  type_check:
+    docker:
+    - image: python:3.6.4
+      environment:
+        PIPENV_VENV_IN_PROJECT: "true"
+    steps:
+    - checkout
+    - attach_workspace:
+        at: ./
+    - run:
+      name: Type Check (mypy)
+      command: pipenv run type_check
+    - store_artifacts:
+      path: ./.mypy-report
+
+    
 
 workflows:
   version: 2
