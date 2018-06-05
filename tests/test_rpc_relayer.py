@@ -24,13 +24,24 @@ class TestRPCRelayer(BaseTestCase):
             return value
 
         @self.relayer_decorator
+        def rpc_payload_method(value: bool, relayer: Relayer) -> bool:
+            relayer.emit('type', 'subtype', 'payload')
+            relayer.log('info', {'message': 'this is a message'})
+            return value
+
+        @self.relayer_decorator
         def method_with_third_party(relayer: Relayer = None) -> None:
             third_party_method()
 
         self.rpc_method = rpc_method
+        self.rpc_payload_method = rpc_payload_method
         self.method_with_third_party = method_with_third_party
 
     def test_input_and_output_works(self) -> None:
+        assert self.rpc_payload_method(True)
+        assert not self.rpc_payload_method(False)
+
+    def test_input_and_output_with_payload_works(self) -> None:
         assert self.rpc_method(True)
         assert not self.rpc_method(False)
 
