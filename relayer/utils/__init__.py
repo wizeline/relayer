@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+
 
 def get_elapsed_time_in_milliseconds(start_time: datetime, end_time: datetime) -> float:
     elapsed_time = end_time - start_time

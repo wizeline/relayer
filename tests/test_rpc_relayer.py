@@ -1,4 +1,3 @@
-from typing import Any
 import json
 
 from relayer import Relayer
@@ -50,4 +49,4 @@ class TestRPCRelayer(BaseTestCase):
 
     def test_decorator_expose_instance(self) -> None:
         assert hasattr(self.relayer_decorator, 'instance')
-        assert isinstance(self.relayer_decorator.instance, Relayer) # type: ignore
+        assert isinstance(self.relayer_decorator.instance, Relayer)  # type: ignore

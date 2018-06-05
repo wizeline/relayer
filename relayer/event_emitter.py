@@ -1,4 +1,4 @@
-from typing import Any, AnyStr, Dict
+from typing import Any, Dict
 from datetime import datetime
 from uuid import UUID
 import json

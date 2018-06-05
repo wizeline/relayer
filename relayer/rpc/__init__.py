@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, Tuple
+from typing import Any, Callable
 
 from datetime import datetime
 
@@ -37,6 +37,6 @@ def make_rpc_relayer(
     # Expose relayer instance
     # Adding attributes to Callable instances is not supported by mypy yet.
     # This is the issue tracking these scenarios: https://github.com/python/mypy/issues/2087
-    decorator.instance = event_relayer # type: ignore
+    decorator.instance = event_relayer  # type: ignore
 
     return decorator

@@ -11,6 +11,7 @@ def get_version() -> Optional[str]:
             return result.group(1)
         return None
 
+
 setup(
     name='relayer',
     version=get_version(),
