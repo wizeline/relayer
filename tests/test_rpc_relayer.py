@@ -19,7 +19,7 @@ class TestRPCRelayer(BaseTestCase):
                 self.logger.log('info', 'here i am')
 
         @self.relayer_decorator
-        def rpc_method(value: Any, relayer: Relayer) -> Any:
+        def rpc_method(value: bool, relayer: Relayer) -> bool:
             relayer.emit('type', 'subtype', 'payload')
             relayer.log('info', 'message')
             return value
@@ -50,4 +50,4 @@ class TestRPCRelayer(BaseTestCase):
 
     def test_decorator_expose_instance(self) -> None:
         assert hasattr(self.relayer_decorator, 'instance')
-        assert isinstance(self.relayer_decorator.instance, Relayer)
+        assert isinstance(self.relayer_decorator.instance, Relayer) # type: ignore
