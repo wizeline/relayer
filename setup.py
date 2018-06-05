@@ -1,12 +1,15 @@
+from typing import Optional
 import re
 from setuptools import setup, find_packages
 
 
-def get_version():
+def get_version() -> Optional[str]:
     with open('relayer/__init__.py', 'r') as f:
         version_regex = r'^__version__\s*=\s*[\'"](.+)[\'"]'
-        return re.search(version_regex, f.read(), re.MULTILINE).group(1)
-
+        result = re.search(version_regex, f.read(), re.MULTILINE)
+        if result:
+            return result.group(1)
+        return None
 
 setup(
     name='relayer',
