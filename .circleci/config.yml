@@ -75,3 +75,6 @@ workflows:
     - unit_test:
         requires:
         - fetch_dependencies
+    - type_check:
+        requires:
+        - fetch_dependencies
