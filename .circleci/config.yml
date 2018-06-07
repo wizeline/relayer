@@ -60,7 +60,7 @@ jobs:
       name: Type Check (mypy)
       command: pipenv run type_check
     - store_artifacts:
-      path: ./.mypy-report
+        path: ./.mypy-report
 
     
 
