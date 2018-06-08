@@ -49,7 +49,7 @@ jobs:
         command: pipenv run test
   type_check:
     docker:
-    - image: python:3.6.4
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
