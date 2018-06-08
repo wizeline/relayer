@@ -5,7 +5,6 @@ from . import BaseTestCase
 
 
 class TestRelayer(BaseTestCase):
-
     def setUp(self) -> None:
         super().setUp()
         self.relayer = Relayer('log', kafka_hosts='foo')

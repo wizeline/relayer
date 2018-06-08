@@ -7,7 +7,6 @@ from . import BaseTestCase
 
 
 class TestRPCRelayer(BaseTestCase):
-
     def setUp(self) -> None:
         super().setUp()
         self.relayer_decorator = make_rpc_relayer('logging', kafka_hosts='kafka', topic_prefix='test_', topic_suffix='_topic')

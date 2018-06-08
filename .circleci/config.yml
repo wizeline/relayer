@@ -10,13 +10,13 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - v1-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-        - v1-pipenv-deps-{{ .Branch }}
-        - v1-pipenv-deps-master
-        - v1-pipenv-deps
+        - v2-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        - v2-pipenv-deps-{{ .Branch }}
+        - v2-pipenv-deps-master
+        - v2-pipenv-deps
     - run: pipenv install -d
     - save_cache:
-        key: v1-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        key: v2-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
         paths:
         - .venv
     - persist_to_workspace:
@@ -58,11 +58,21 @@ jobs:
         at: ./
     - run:
         name: Type Check (mypy)
-        command: pipenv run type_check
+        command: pipenv run type-check
     - store_artifacts:
         path: ./.mypy-report
-
-    
+  format_check:
+    docker:
+    - image: ixai/pipenv:3.6
+      environment:
+        PIPENV_VENV_IN_PROJECT: "true"
+    steps:
+    - checkout
+    - attach_workspace:
+        at: ./
+    - run:
+        name: Format Check (yapf)
+        command: pipenv run format-check
 
 workflows:
   version: 2
@@ -76,5 +86,8 @@ workflows:
         requires:
         - fetch_dependencies
     - type_check:
+        requires:
+        - fetch_dependencies
+    - format_check:
         requires:
         - fetch_dependencies

@@ -10,7 +10,6 @@ from . import BaseTestCase
 
 
 class TestEventEmitter(BaseTestCase):
-
     def setUp(self) -> None:
         self.producer = MockedProducer()
         self.emitter = EventEmitter(self.producer)

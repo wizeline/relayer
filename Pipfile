@@ -7,22 +7,25 @@ name = "pypi"
 lint = "flake8 ."
 publish = "python setup.py sdist upload"
 test = "nosetests"
-type_check = "mypy ."
+type-check = "mypy ."
+format = "yapf -ir deadbolt tests"
+format-check = "yapf -dr deadbolt tests"
 
 [dev-packages]
-"flake8-debugger" = "*"
-"flake8-quotes" = "*"
-"flake8" = "*"
-"pep8-naming" = "*"
+flake8-debugger = "*"
+flake8-quotes = "*"
+flake8 = "*"
+pep8-naming = "*"
 coverage = "*"
 nose = "*"
 rednose = "*"
 sure = "*"
-Flask = "*"
 mypy = "*"
 lxml = "*"
+yapf = "*"
 
 [packages]
+flask = "*"
 "e1839a8" = {path = ".", editable = true}
 
 [requires]
