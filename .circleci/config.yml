@@ -10,13 +10,13 @@ jobs:
     - checkout
     - restore_cache:
         keys:
-        - pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-        - pipenv-deps-{{ .Branch }}
-        - pipenv-deps-master
-        - pipenv-deps
+        - v1-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        - v1-pipenv-deps-{{ .Branch }}
+        - v1-pipenv-deps-master
+        - v1-pipenv-deps
     - run: pipenv install -d
     - save_cache:
-        key: pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        key: v1-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
         paths:
         - .venv
     - persist_to_workspace:
