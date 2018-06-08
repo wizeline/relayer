@@ -11,7 +11,6 @@ TEST_VAL = 'bar_val'
 
 
 class FlaskRelayerTestCase(BaseTestCase):
-
     def setUp(self) -> None:
         super().setUp()
         app = flask.Flask(__name__)

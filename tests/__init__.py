@@ -6,7 +6,6 @@ from relayer.test import RelayerPatch
 
 
 class BaseTestCase(TestCase):
-
     def setUp(self) -> None:
         self.relayer_patch = RelayerPatch()
         self.relayer_patch.start()
