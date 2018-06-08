@@ -3,7 +3,7 @@ version: 2
 jobs:
   fetch_dependencies:
     docker:
-    - image: ixai/pipenv:3.5
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
@@ -25,7 +25,7 @@ jobs:
         - .venv
   lint:
     docker:
-    - image: ixai/pipenv:3.5
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
@@ -37,7 +37,7 @@ jobs:
         command: pipenv run lint
   unit_test:
     docker:
-    - image: ixai/pipenv:3.5
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
