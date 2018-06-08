@@ -8,45 +8,56 @@ from . import BaseTestCase
 
 class TestRPCRelayer(BaseTestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         self.relayer_decorator = make_rpc_relayer('logging', kafka_hosts='kafka', topic_prefix='test_', topic_suffix='_topic')
         self.logger = None
 
-        def third_party_method():
+        def third_party_method() -> None:
             if self.logger:
                 self.logger.log('info', 'here i am')
 
         @self.relayer_decorator
-        def rpc_method(value, relayer=None):
+        def rpc_method(value: bool, relayer: Relayer) -> bool:
             relayer.emit('type', 'subtype', 'payload')
             relayer.log('info', 'message')
             return value
 
         @self.relayer_decorator
-        def method_with_third_party(relayer=None):
+        def rpc_payload_method(value: bool, relayer: Relayer) -> bool:
+            relayer.emit('type', 'subtype', 'payload')
+            relayer.log('info', {'message': 'this is a message'})
+            return value
+
+        @self.relayer_decorator
+        def method_with_third_party(relayer: Relayer = None) -> None:
             third_party_method()
 
         self.rpc_method = rpc_method
+        self.rpc_payload_method = rpc_payload_method
         self.method_with_third_party = method_with_third_party
 
-    def test_input_and_output_works(self):
-        self.rpc_method(True).should.be.true
-        self.rpc_method(False).should.be.false
+    def test_input_and_output_works(self) -> None:
+        assert self.rpc_payload_method(True)
+        assert not self.rpc_payload_method(False)
 
-    def test_emitted_messages(self):
+    def test_input_and_output_with_payload_works(self) -> None:
+        assert self.rpc_method(True)
+        assert not self.rpc_method(False)
+
+    def test_emitted_messages(self) -> None:
         self.rpc_method(True)
         messages = self._get_topic_messages('test_type_topic')
-        messages.should.have.length_of(1)
+        assert len(messages) == 1
         message = json.loads(messages[0][0].decode('utf-8'))
 
-        message.should.have.key('event_type')
-        message.should.have.key('event_subtype')
-        message.should.have.key('payload')
-        message['event_type'].should.equal('type')
-        message['event_subtype'].should.equal('subtype')
-        message['payload'].should.equal('payload')
+        assert 'event_type' in message
+        assert 'event_subtype' in message
+        assert 'payload' in message
+        assert message['event_type'] == 'type'
+        assert message['event_subtype'] == 'subtype'
+        assert message['payload'] == 'payload'
 
-    def test_decorator_expose_instance(self):
-        self.relayer_decorator.should.have.property('instance')
-        self.relayer_decorator.instance.should.be.a(Relayer)
+    def test_decorator_expose_instance(self) -> None:
+        assert hasattr(self.relayer_decorator, 'instance')
+        assert isinstance(self.relayer_decorator.instance, Relayer)  # type: ignore

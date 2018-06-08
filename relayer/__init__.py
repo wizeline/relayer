@@ -1,3 +1,4 @@
+from typing import Any, Dict, Union
 from kafka import KafkaProducer
 
 from .event_emitter import EventEmitter
@@ -28,7 +29,7 @@ class Relayer(object):
             for http://kafka-python.readthedocs.io/en/master/apidoc/KafkaProducer.html
     """
 
-    def __init__(self, logging_topic, **kwargs):
+    def __init__(self, logging_topic: str, **kwargs: str) -> None:
         self.logging_topic = logging_topic
 
         if 'kafka_hosts' not in kwargs:
@@ -37,34 +38,33 @@ class Relayer(object):
         topic_prefix = kwargs.get('topic_prefix', '')
         topic_suffix = kwargs.get('topic_suffix', '')
 
-        if 'source' not in kwargs:
-            self.source = '{0}{1}{2}'.format(topic_prefix, logging_topic, topic_suffix)
-        else:
-            self.source = kwargs.get('source')
+        self.source = kwargs.get('source', '{0}{1}{2}'.format(topic_prefix, logging_topic, topic_suffix))
 
         producer_opts = kwargs.get('producer_opts', {})
         self._producer = KafkaProducer(bootstrap_servers=kwargs.get('kafka_hosts'), **producer_opts)
 
         self._emitter = EventEmitter(self._producer, topic_prefix=topic_prefix, topic_suffix=topic_suffix)
 
-    def emit(self, event_type, event_subtype, payload, partition_key=None):
-        payload = {
+    def emit(self, event_type: str, event_subtype: str, payload: Union[Dict[Any, Any], str], partition_key: str = None) -> None:
+        message = {
             'source': self.source,
             'event_type': event_type,
             'event_subtype': event_subtype,
             'payload': payload
         }
-        self._emitter.emit(event_type, payload, partition_key)
+        self._emitter.emit(event_type, message, partition_key)
 
-    def emit_raw(self, topic, message, partition_key=None):
+    def emit_raw(self, topic: str, message: Dict[Any, Any], partition_key: str = None) -> None:
         self._emitter.emit(topic, message, partition_key)
 
-    def log(self, log_level, payload):
-        if dict != type(payload):
-            payload = {'message': payload}
+    def log(self, log_level: str, payload: Union[Dict[Any, Any], str]) -> None:
+        if not isinstance(payload, dict):
+            log_payload = {'message': payload}
+        else:
+            log_payload = payload
 
         log.debug('relayer_logger_deprecated')
-        log.info('relayer_log', log_level=log_level, **payload)  # logger.log isn't working properly
+        log.info('relayer_log', log_level=log_level, **log_payload)  # logger.log isn't working properly
 
-    def flush(self):
+    def flush(self) -> None:
         self._emitter.flush()

@@ -21,3 +21,7 @@ man/
 .tox/
 .coverage
 cover/
+
+# mypy
+.mypy-report/
+.mypy_cache/

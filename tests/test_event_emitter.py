@@ -11,47 +11,48 @@ from . import BaseTestCase
 
 class TestEventEmitter(BaseTestCase):
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.producer = MockedProducer()
         self.emitter = EventEmitter(self.producer)
 
-    def test_sending_message(self):
+    def test_sending_message(self) -> None:
         self.emitter.emit('foo', {'foo_key': 'bar_val'})
         messages = self._get_topic_messages('foo')
-        messages.should.have.length_of(1)
+        assert len(messages) == 1
         message = json.loads(messages[0][0].decode('utf-8'))
-        message.should.contain('foo_key')
-        message['foo_key'].should.equal('bar_val')
+        assert 'foo_key' in message
+        assert message['foo_key'] == 'bar_val'
 
-    def test_throws_if_not_sending_json_serializable(self):
-        self.emitter.emit.when.called_with('foo', datetime.utcnow()).should.throw(NonJSONSerializableMessageError)
+    def test_throws_if_not_sending_json_serializable(self) -> None:
+        self.assertRaises(NonJSONSerializableMessageError, self.emitter.emit, 'foo', datetime.utcnow())
 
-    def test_incorrect_partition_key(self):
-        self.emitter.emit.when.called_with('foo', 'bar', datetime.utcnow()).should.throw(UnsupportedPartitionKeyTypeError)
+    def test_incorrect_partition_key(self) -> None:
+        self.assertRaises(UnsupportedPartitionKeyTypeError, self.emitter.emit, 'foo', 'bar', datetime.utcnow())
+        # self.emitter.emit.when.called_with('foo', 'bar', datetime.utcnow()).should.throw(UnsupportedPartitionKeyTypeError)
 
-    def test_string_partition_key(self):
+    def test_string_partition_key(self) -> None:
         self.emitter.emit('foo', {'foo': 'bar'}, partition_key='key')
         messages = self._get_topic_messages('foo')
-        messages.should.have.length_of(1)
-        messages[0][1].should.equal(b'key')
+        assert len(messages) == 1
+        assert b'key' in messages[0][1]
 
-    def test_uuid_partition_key(self):
+    def test_uuid_partition_key(self) -> None:
         key = uuid4()
         self.emitter.emit('foo', {'foo': 'bar'}, partition_key=key)
         messages = self._get_topic_messages('foo')
-        messages.should.have.length_of(1)
-        messages[0][1].should.equal(key.bytes)
+        assert len(messages) == 1
+        assert key.bytes in messages[0][1]
 
-    def test_flush(self):
+    def test_flush(self) -> None:
         self.emitter.flush()
-        self.producer.flushed.should.be.true
+        assert self.producer.flushed
 
-    def test_message_prefix(self):
+    def test_message_prefix(self) -> None:
         self.emitter = EventEmitter(self.producer, topic_prefix='test_')
         self.emitter.emit('foo', {'foo': 'bar'})
-        self._get_topic_messages('test_foo').should.have.length_of(1)
+        assert len(self._get_topic_messages('test_foo')) == 1
 
-    def test_message_suffix(self):
+    def test_message_suffix(self) -> None:
         self.emitter = EventEmitter(self.producer, topic_suffix='_test')
         self.emitter.emit('foo', {'foo': 'bar'})
-        self._get_topic_messages('foo_test').should.have.length_of(1)
+        assert len(self._get_topic_messages('foo_test')) == 1

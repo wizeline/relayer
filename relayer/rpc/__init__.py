@@ -1,10 +1,16 @@
+from typing import Any, Callable
+
 from datetime import datetime
 
 from relayer import Relayer, utils
 from relayer.logging import logger
 
 
-def make_rpc_relayer(logging_topic, kafka_hosts=None, **kwargs):
+def make_rpc_relayer(
+    logging_topic: str,
+    kafka_hosts: str = '',
+    **kwargs: str
+) -> Callable[..., Any]:
 
     event_relayer = Relayer(
         logging_topic,
@@ -12,8 +18,8 @@ def make_rpc_relayer(logging_topic, kafka_hosts=None, **kwargs):
         **kwargs,
     )
 
-    def decorator(function):
-        def wrapper(*args, **kwargs):
+    def decorator(function: Callable[..., Any]) -> Callable[..., Any]:
+        def wrapper(*args: Any, **kwargs: Any) -> Callable[..., Any]:
             start_time = datetime.utcnow()
             kwargs['relayer'] = event_relayer
             service_response = function(*args, **kwargs)
@@ -29,6 +35,8 @@ def make_rpc_relayer(logging_topic, kafka_hosts=None, **kwargs):
         return wrapper
 
     # Expose relayer instance
-    decorator.instance = event_relayer
+    # Adding attributes to Callable instances is not supported by mypy yet.
+    # This is the issue tracking these scenarios: https://github.com/python/mypy/issues/2087
+    decorator.instance = event_relayer  # type: ignore
 
     return decorator

@@ -3,20 +3,20 @@ version: 2
 jobs:
   fetch_dependencies:
     docker:
-    - image: ixai/pipenv:3.5
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
     - checkout
     - restore_cache:
         keys:
-        - pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-        - pipenv-deps-{{ .Branch }}
-        - pipenv-deps-master
-        - pipenv-deps
+        - v1-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        - v1-pipenv-deps-{{ .Branch }}
+        - v1-pipenv-deps-master
+        - v1-pipenv-deps
     - run: pipenv install -d
     - save_cache:
-        key: pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        key: v1-pipenv-deps-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
         paths:
         - .venv
     - persist_to_workspace:
@@ -25,7 +25,7 @@ jobs:
         - .venv
   lint:
     docker:
-    - image: ixai/pipenv:3.5
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
@@ -37,7 +37,7 @@ jobs:
         command: pipenv run lint
   unit_test:
     docker:
-    - image: ixai/pipenv:3.5
+    - image: ixai/pipenv:3.6
       environment:
         PIPENV_VENV_IN_PROJECT: "true"
     steps:
@@ -47,6 +47,22 @@ jobs:
     - run:
         name: Unit test (nose)
         command: pipenv run test
+  type_check:
+    docker:
+    - image: ixai/pipenv:3.6
+      environment:
+        PIPENV_VENV_IN_PROJECT: "true"
+    steps:
+    - checkout
+    - attach_workspace:
+        at: ./
+    - run:
+        name: Type Check (mypy)
+        command: pipenv run type_check
+    - store_artifacts:
+        path: ./.mypy-report
+
+    
 
 workflows:
   version: 2
@@ -57,5 +73,8 @@ workflows:
         requires:
         - fetch_dependencies
     - unit_test:
+        requires:
+        - fetch_dependencies
+    - type_check:
         requires:
         - fetch_dependencies
