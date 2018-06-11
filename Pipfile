@@ -5,7 +5,7 @@ name = "pypi"
 
 [scripts]
 lint = "flake8 ."
-publish = "python setup.py sdist upload -r wizeline"
+publish = "python setup.py sdist upload"
 test = "nosetests"
 type-check = "mypy ."
 format = "yapf -ir deadbolt tests"
