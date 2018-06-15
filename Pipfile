@@ -25,7 +25,6 @@ lxml = "*"
 yapf = "*"
 
 [packages]
-flask = "*"
 "e1839a8" = {path = ".", editable = true}
 
 [requires]
