@@ -5,7 +5,7 @@ from .event_emitter import EventEmitter
 from .exceptions import ConfigurationError
 from .logging import logger as log
 
-__version__ = '2.0.3'
+__version__ = '2.0.4'
 
 
 class Relayer(object):
