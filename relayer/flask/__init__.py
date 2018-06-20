@@ -15,7 +15,7 @@ class FlaskRelayer(object):
                 **kwargs,
             )
 
-    def init_app(self, app: Flask, logging_topic: str, kafka_hosts: str = None, **kwargs: str) -> None:
+    def init_app(self, app: Flask, logging_topic: Any, kafka_hosts: str = None, **kwargs: str) -> None:
         kafka_hosts = kafka_hosts or app.config.get('KAFKA_HOSTS')
         self.event_relayer = Relayer(
             logging_topic,
