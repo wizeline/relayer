@@ -6,7 +6,7 @@ from relayer import Relayer
 
 class FlaskRelayer(object):
 
-    def __init__(self, app: Flask, logging_topic: str, kafka_hosts: str = None, **kwargs: str) -> None:
+    def __init__(self, app: Flask = None, logging_topic: str = None, kafka_hosts: str = None, **kwargs: str) -> None:
         if app:
             self.init_app(
                 app,
@@ -15,7 +15,7 @@ class FlaskRelayer(object):
                 **kwargs,
             )
 
-    def init_app(self, app: Flask, logging_topic: str, kafka_hosts: str = None, **kwargs: str) -> None:
+    def init_app(self, app: Flask, logging_topic: Any, kafka_hosts: str = None, **kwargs: str) -> None:
         kafka_hosts = kafka_hosts or app.config.get('KAFKA_HOSTS')
         self.event_relayer = Relayer(
             logging_topic,
